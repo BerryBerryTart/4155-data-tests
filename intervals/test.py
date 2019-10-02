@@ -1,11 +1,8 @@
-import glob
 
 def main():
-    with open('../data/hours/reversed-data.txt', 'r') as file:
-        head = [next(file) for x in range(10)]
-
-    for el in head:
-        print(el)
+    a = 'Sep 16 00:59:59 | 501100 | 14:c2:13:cc:3b:74 | StuU140'
+    hour = a.split('|')[0].split(' ')[2].split(':')[0]
+    print(int(hour))
 
 
 if __name__ == '__main__':

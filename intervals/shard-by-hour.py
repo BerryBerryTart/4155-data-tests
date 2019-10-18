@@ -1,6 +1,6 @@
 
 def main():
-    with open('../data/hours/reversed-data.txt', 'r') as file:
+    with open('../data/clean/reversed-data.txt', 'r') as file:
         lines = reversed(file.readlines())
 
     currentHour = 0
@@ -9,7 +9,7 @@ def main():
     #here's where the magic happens
     #also please don't crash please I beg you
     for line in lines:
-        hour = line.split('|')[0].split(' ')[2].split(':')[0]
+        hour = line.split('|')[1].split(':')[0]
         if(currentHour == int(hour)):
             file.write(line)
         else:

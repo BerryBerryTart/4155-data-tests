@@ -1,7 +1,8 @@
 import re
 
 def formatLine(line):
-    timestamp = r'([a-zA-z]{3}\s\d{2}\s\d{2}\:\d{2}\:\d{2})'
+    date = r'([a-zA-z]{3}\s\d{2})'
+    timestamp = r'(\d{2}\:\d{2}\:\d{2})'
     mac = r'(([a-f0-9]{2}:){5}[a-f0-9]{2})'
     deauthMAC = r'sta:\s(([a-f0-9]{2}:){5}[a-f0-9]{2})'
     ap = r'-(\w*)-\w*-\w*$'
@@ -10,6 +11,10 @@ def formatLine(line):
     a = []
     #here devices connect
     if (line.find('501100') != -1):
+        #date
+        str_date = re.search(date, line)
+        if(str_date):
+            a.append(str_date.group(1))
         #time
         str_time = re.search(timestamp, line)
         if(str_time):
@@ -28,6 +33,10 @@ def formatLine(line):
     #deauth formating
     deauth_code = re.search(d_code, line)
     if(deauth_code):
+        #date
+        str_date = re.search(date, line)
+        if(str_date):
+            a.append(str_date.group(1))
         #time
         str_time = re.search(timestamp, line)
         if(str_time):
@@ -43,7 +52,8 @@ def formatLine(line):
         if (str_ap):
             a.append(str_ap.group(1))
 
-    if(len(a) == 4):
-        return ' | '.join(a)
+    #FORMAT CHECKER
+    if(len(a) == 5):
+        return '|'.join(a)
     else:
         return None

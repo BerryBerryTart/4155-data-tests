@@ -3,7 +3,7 @@ import operator
 
 def main():
     apdict = {}
-    with open('../data/hours/00-hour.txt', 'r') as file:
+    with open('../data/hours/12-hour.txt', 'r') as file:
         lines = file.readlines()
 
     # LINE STRUCTURE

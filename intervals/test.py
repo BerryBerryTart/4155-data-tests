@@ -1,8 +1,13 @@
+import formatLine
 
 def main():
-    for k in range(10000000):
-        if ((k % 1000000) == 0):
-            print(k/1000000)
+    with open('../data/wifilog.txt', 'r') as file:
+        head = [next(file) for x in range(100)]
+
+    for line in head:
+        line = formatLine.formatLine(line)
+        if (line != None):
+            print(line)
 
 
 if __name__ == '__main__':

@@ -5,8 +5,7 @@ def formatLine(line):
     timestamp = r'(\d{2}\:\d{2}\:\d{2})'
     mac = r'(([a-f0-9]{2}:){5}[a-f0-9]{2})'
     deauthMAC = r'sta:\s(([a-f0-9]{2}:){5}[a-f0-9]{2})'
-    ap = r'-(\w*)-\w*-\w*$'
-    deauthAP = r'AP\s(?:\d{1,3}\.){3}\d{1,3}-(?:(?:[a-f0-9]{2}:){5}[a-f0-9]{2})-(EXT-\w.*?|\w.*?)-'
+    ap = r'AP\s(?:\d{1,3}\.){3}\d{1,3}-(?:(?:[a-f0-9]{2}:){5}[a-f0-9]{2})-([^\s]+)'
     d_code = r'<(501105|501106|501080)>'
     a = []
     #here devices connect
@@ -28,7 +27,7 @@ def formatLine(line):
         #AP
         str_ap = re.search(ap, line)
         if (str_ap):
-            a.append(str_ap.group(1))
+            a.append(formatAP(str_ap.group(1)))
 
     #deauth formating
     deauth_code = re.search(d_code, line)
@@ -48,12 +47,24 @@ def formatLine(line):
         if (str_mac):
             a.append(str_mac.group(1))
         #ap
-        str_ap = re.search(deauthAP, line)
+        str_ap = re.search(ap, line)
         if (str_ap):
-            a.append(str_ap.group(1))
+            a.append(formatAP(str_ap.group(1)))
 
     #FORMAT CHECKER
     if(len(a) == 5):
         return '|'.join(a)
     else:
         return None
+
+#cleans up the access point and removes any unecessary stuff
+def formatAP(point):
+    eol_check = r'(\d+)$'
+    mid_check = r'(AP\d+)'
+    point_mid_check = re.search(mid_check, point)
+    if(point_mid_check):
+        point = point.replace(point_mid_check.group(1) + '-', '')
+    point_end_check = re.search(eol_check, point)
+    if(point_end_check):
+        point = point.replace('-' + point_end_check.group(1), '')
+    return point

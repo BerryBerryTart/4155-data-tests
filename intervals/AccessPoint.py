@@ -1,10 +1,12 @@
 from functools import total_ordering
+import re
 
 @total_ordering
 class AccessPoint():
     def __init__(self, name):
         self.name = name
         self.connected = []
+        self.building = self.getBuilding(name)
 
     def __len__(self):
         return len(self.connected)
@@ -31,3 +33,19 @@ class AccessPoint():
         elif(code == '501100'):
             if mac not in self.connected:
                 self.connected.append(mac)
+
+    def getBuilding(self, ap):
+        #captures points with room numbers
+        pattern = r'([a-zA-Z]+)\d'
+        #captures the rest
+        pattern2 = r'([a-zA-Z]+)-'
+
+        result = ap.replace('EXT-', '')
+        apSearch = re.search(pattern, result)
+        if (apSearch):
+            result = apSearch.group(1)
+        apSearch2 = re.search(pattern2, result)
+        if (apSearch2):
+            result = apSearch2.group(1)
+
+        return result

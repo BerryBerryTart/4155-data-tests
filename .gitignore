@@ -3,3 +3,4 @@ data/
 *.rar
 *.tar
 test.py
+__pycache__/

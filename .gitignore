@@ -2,3 +2,5 @@ data/
 *.zip
 *.rar
 *.tar
+test.py
+__pycache__/

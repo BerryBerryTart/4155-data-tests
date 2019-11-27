@@ -1,0 +1,1 @@
+BLACKLIST = ["Biss", "CenC", "Faci", "FOPS", "FacA", "JBui", "EHS", "Temp", "NCRC", "NERF", "Wach", "RUP", "RE"]

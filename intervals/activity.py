@@ -3,6 +3,7 @@ import operator
 import json
 from datetime import datetime, timedelta
 import glob
+from blacklist import BLACKLIST
 
 # LINE STRUCTURE
 # DATE | TIME | CODE | MAC | AP
@@ -71,9 +72,11 @@ def getDateTime(line):
 def dumpJsonData(apdict, end_time):
     ### REFACTOR TO INCLUDE ALL ZERO ACTIVITY POINTS ###
     inactive = []
-    #Get APs with no activity
+    #Get APs with no activity / Buildings that don't matter
     for ap, count in apdict.items():
         if (len(apdict[ap]) == 0):
+            inactive.append(ap)
+        elif (apdict[ap].building in BLACKLIST):
             inactive.append(ap)
 
     #Clean up

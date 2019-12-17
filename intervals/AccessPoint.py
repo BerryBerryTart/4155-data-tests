@@ -27,12 +27,15 @@ class AccessPoint():
         return len(self) == len(ap2)
 
     def process(self, code, mac):
+        #Access point left the area, remove from array
         if(code == '501105' or code == '501106' or code == '501080'):
             if mac in self.connected:
                 self.connected.remove(mac)
+        #access point just arrived, add to array
         elif(code == '501100'):
             if mac not in self.connected:
                 self.connected.append(mac)
+        #The length of the self.connected array is the number of people in the area
 
     def getBuilding(self, ap):
         #captures points with room numbers

@@ -3,6 +3,7 @@ import operator
 import json
 from datetime import datetime, timedelta
 import glob
+import pickle
 from blacklist import BLACKLIST
 
 # LINE STRUCTURE
@@ -70,18 +71,27 @@ def getDateTime(line):
     return datetime(year, month, day, hour, min)
 
 def dumpJsonData(apdict, end_time):
+    #MASTER LIST OF ALL ACCESS POINTS
+    MASTERARRAY = []
+    with open('masterArray', 'rb') as file:
+        MASTERARRAY = pickle.load(file)
+
     ### REFACTOR TO INCLUDE ALL ZERO ACTIVITY POINTS ###
     inactive = []
     #Get APs with no activity / Buildings that don't matter
     for ap, count in apdict.items():
-        if (len(apdict[ap]) == 0):
-            inactive.append(ap)
-        elif (apdict[ap].building in BLACKLIST):
+        # if (len(apdict[ap]) == 0):
+        #     inactive.append(ap)
+        if (apdict[ap].building in BLACKLIST):
             inactive.append(ap)
 
     #Clean up
     for el in inactive:
         apdict.pop(el)
+
+    for el in MASTERARRAY:
+        if el not in apdict:
+            apdict[el] = AP.AccessPoint(el)
 
     #sort
     sortedap = sorted(apdict.items(), key=operator.itemgetter(1), reverse=True)

@@ -50,7 +50,7 @@ def main():
         for item in return_dict.values():
             cnt = cnt + item
 
-    #preserve object state because god damn this is slow
+    #preserve object state because this is so slow
     print("pickling the thing")
     aplist = open('../data/aplist', 'wb')
     pickle.dump(cnt, aplist)
@@ -61,8 +61,7 @@ def tCount(filenameList, procnum, return_dict):
     code = '501100'
     # global cnt, lock
 
-    #Thanks Dak
-    jeffrey = Counter()
+    apCounter = Counter()
 
     for filename in filenameList:
         with open(filename, 'r') as file:
@@ -73,10 +72,10 @@ def tCount(filenameList, procnum, return_dict):
                 if (code in line):
                     res = re.search(pattern, line)
                     if(res):
-                        jeffrey = jeffrey + Counter([res.group(1)])
+                        apCounter = apCounter + Counter([res.group(1)])
 
     #Put the shared object into the shared dictionary
-    return_dict[procnum] = jeffrey
+    return_dict[procnum] = apCounter
 
 if __name__ == '__main__':
     main()

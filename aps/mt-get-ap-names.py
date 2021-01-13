@@ -41,7 +41,7 @@ def main():
         thread.join()
         print('killing thread: ' + thread.name)
 
-    #preserve object state because god damn this is slow
+    #preserve object state because this is so slow
     print("pickling the thing")
     aplist = open('../data/aplist', 'wb')
     pickle.dump(cnt, aplist)
@@ -52,8 +52,7 @@ def tCount(filenameList):
     code = '501100'
     global cnt, lock
 
-    #Thanks Dak
-    jeffrey = Counter()
+    apCounter = Counter()
 
     for filename in filenameList:
         with open(filename, 'r') as file:
@@ -64,11 +63,11 @@ def tCount(filenameList):
                 if (code in line):
                     res = re.search(pattern, line)
                     if(res):
-                        jeffrey = jeffrey + Counter([res.group(1)])
+                        apCounter = apCounter + Counter([res.group(1)])
 
-    #JEFFREY SUBMITS HIMSELF TO THE GLOBAL GOD
+    #sum everything up
     with lock:
-        cnt = cnt + jeffrey
+        cnt = cnt + apCounter
 
 if __name__ == '__main__':
     cnt = Counter()
